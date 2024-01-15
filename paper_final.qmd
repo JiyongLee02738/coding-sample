@@ -1,0 +1,183 @@
+---
+title: "The Effects of Extreme Candidates' Wins in Primary Elections on General Election Outcomes"
+author: "Jiyong Lee"
+format:
+  cmc-article-pdf:
+    fontsize: 12pt
+    margin-left: 1.5in
+    margin-right: 1.5in
+    margin-bottom: 1.2in
+    margin-top: 1.2in
+    keep-tex: true
+    fig-pos: 'h'
+    tbl-pos: 'tbp'
+    include-in-header: header.tex
+bibliography: bibliography.bib
+abstract: | 
+  This paper examines the effects of the extreme candidates winning in the primary elections on their party's general election outcomes. Following the method from Hall's study, this paper uses regression discontinuity design to estimate the causal effect of extremists' victory by focusing on the candidates who narrowly win or lose primary elections. In extension, I estimated the same regression model using the DIME data set with more recent data. The regression results from the replication of Hall's study suggest that extremists' wins negatively affect general election outcomes. In contrast, the results using the DIME dataset indicate that the effects of extremists' wins on general election vote share are positive in both 1980-2010 and 1979-2020, except in one specification. The difference in the direction of the impact may be due to the difference in measures of ideology, which requires further research.  
+  
+editor: 
+  markdown:
+    wrap: sentence
+---
+
+# Introduction
+
+Political polarization has been accelerating in many countries, particularly in the U.S.[^1]
+A recent analysis by Pew Research shows that there are only a few dozen moderate congresspersons compared to more than 160 in 1971-1972, and the root of the political polarization goes back decades.
+[^2] Although presidential elections tend to garner more attention than elections of the House of Representatives, they, too, have long-lasting impacts on the district and subsequent representation in Congress
+. Thus, the consequences of electing extremists to the House of Representatives are worth investigating
+.
+
+[^1]: "U.S. is polarizing faster than other democracies, study finds" *Brown University* <https://www.brown.edu/news/2020-01-21/polarization>
+
+[^2]: "The polarization in today's Congress has roots that go back decades" *Pew Research Center* <https://www.pewresearch.org/short-reads/2022/03/10/the-polarization-in-todays-congress-has-roots-that-go-back-decades/>
+
+In a study by @hall2015, Hall examined the causal relationship between extreme candidates' winning in primary elections and the general election outcomes by analyzing the primary election data for the House of Representatives [@hall2015].
+The study utilized the random assignment of politicians winning the election around the margin of zero.
+The author found that in close elections, extremists' wins have caused an increase in the general election vote share by 9-13 percentage points and increased the probability for the party for the general election by 35-54 percentage points.
+Moreover, the study shows that in the years after the election, political representation of the district is likely to reverse.
+This can be because when an extremist candidate wins a primary election, it could motivate the other party to put greater effort into the election campaign.
+Primary elections also better reflect the ideological preference of the voters since the primary voters choose a candidate within the same party.
+In contrast, general election voters choose candidates across different parties, reflecting their party preference.
+In extension, instead of the data used in Hall's study, which had years from 1980 to 2010, I used the Database on Ideology, Money in Politics, and Elections (DIME), which had data from 1979 to 2020.
+By using more recent data, this study tries to see if the exact causal relationship between extremist candidates' wins in primary elections and general election outcomes holds.
+
+I used the regression discontinuity (RD) designs in both replication and extension.
+RD designs have the advantage of creating quasi-experimental estimates in settings where individuals cannot precisely manipulate their assignment [@lee2010].
+To estimate a causal relationship, the observations near the cutoff value need to be used so that those assigned to the control group serve as the counterfactuals of those assigned to the treatment group.
+However, it is also necessary to note that some studies discuss the limitations of RD designs in analyzing election data.
+A distinct feature of politician characteristic regression discontinuity (PCRD) is that politician characteristics are pre-determined [@marshall2022].
+@marshall2022 argues that due to the nature of PCRD, which uses a pre-determined characteristic for an assignment variable, PCRD estimates cannot be interpreted as a result of one distinct characteristic of the treatment group politicians but should be interpreted as a consequence of a group of characteristics that differ between the two groups, and this recommendation is reinforced by [@bertoli2023].
+ 
+
+# Data
+
+This paper utilizes the replication data of Hall (2015), originally compiled by Ansolabehere et al., which has data on candidates' primary and general election outcomes by year, district, and party, as well as their ideological score [@hall2015].
+The measure of candidates' ideology is the estimated ideological positions developed by Hall's previous study.
+It is based on campaign receipts of primary elections and estimated using the ideological position of their donors of donation.
+
+The observations in the replication dataset are from 1980 to 2010 and are primary elections between an extreme and moderate candidate where the treatment status is determined by the extremist's winning.
+The ideological score *absdist* is used to identify elections between extreme and moderate candidates, and observations are included if they have above the median difference in ideological score between the two candidates. 
+
+Since the study tries to identify the effects of an extreme candidate barely winning, all observations are close elections, which are identified by the size of the difference between the vote share of the top two candidates.
+Specifically, the winning margin, *rv*, is calculated as the ratio of extremist's vote share to the sum of moderate and extremist candidates' vote share minus 0.5, and its absolute value is the variable *margin*.
+
+In extending Hall's study, I used the Database on Ideology, Money in Politics, and Elections (DIME).[^3]
+DIME dataset contains data on primary and general election outcomes, donation recipients, and political parties for each candidate from 1979 to 2020.
+It also has CF scores, another measure of ideology, which were developed by Bonica by utilizing campaign finance data.
+Following the methodology of @hall2015, I identified elections between an extreme and moderate candidate by keeping observations with the CF scores larger than its median value.
+The outcome variables in replication and extension are general election vote share, which takes the value between 0 and 1, and general election victory, a binary variable taking the value of one if the candidate wins the general election.
+
+[^3]: Bonica, Adam.
+    2023.
+    Database on Ideology, Money in Politics, and Elections: Public version 3.0 \[Computer file\].
+    Stanford, CA: Stanford University Libraries. 
+    [**https://data.stanford.edu/dime.**](https://data.stanford.edu/dime.)
+
+# Method
+
+Using the equation below, I estimated the regression discontinuity (RD) model with two outcomes: general election vote share and general election victory.
+The running variable is the winning vote margin of the extremist candidates whose value above 0 indicates extremists' winning.
+
+$$Y_{ipt} = \beta_0 + \beta_1 W_{ipt} + f(X_{ipt}) + \epsilon_{ipt}$$ The equation above estimates the effect of extremist's win $W_{ipt}$ in close primary elections on the general election outcomes $Y_{ipt}$ for each party $p$, district $i$, and year $t$.
+
+Since the RD estimates require a random assignment of the treatment variable, the extreme candidate's winning, the bandwidth needs to be carefully chosen.
+If the bandwidth is too large, it could be less accurate since it would include candidates who do not win or lose by a narrow margin.
+On the other hand, if the bandwidth is too small, it could include more measurement errors [@hall2015].
+Therefore, multiple bandwidths and specifications were explored following the specifications in @hall2015.
+
+A necessary assumption for regression discontinuity design is that the outcomes must be smooth around the cutoff, specifically around the winning margin of 0.
+This assumption implies that primary candidates should have no precise control over their election outcomes.
+In primary elections, even if the candidates are aware that they are about to win or lose by a narrow margin, they have no way to control their outcome to win precisely, and thus the assumption is satisfied.
+
+# Replication Results
+
+## Summary Statistics
+
+![Summary Statistics (Replication)](images/summary_stats_rep.png){#fig-sum_stats_1 fig-align="center" width="75%"}
+
+@fig-sum_stats_1 shows the mean values of key variables for moderate and extreme candidates in general elections.
+The vote share of moderates is higher than extremists by three percentage points, and the probability of victory for moderate candidates is also higher by 13 percentage points.
+It is worth noting that the ratio of the funds from the party to those from political action committees is higher for extremists than moderates.
+
+![General Election Vote Share and Extremist Winning Margin (Replication)](images/figure2.jpg){#fig-figure2 fig-align="center" width="75%"}
+
+@fig-figure2 shows the general election vote share against the winning margin of the extremist candidate in the primary election.
+To the right of the margin of 0, the extremist candidates won the election, and to the left, they lost.
+Each side shows the slope of vote share against the margin.
+Around the margin of 0, there is a drop in the general election vote share, suggesting a possible negative effect of extremist's winning on the general election vote share.
+
+## Regression Results
+
+The outcome variables of the estimated regression model are general election vote share and election victory.
+Three different RD specifications were selected for each outcome: local linear and bandwidth of 5, Imbens-Kalyanaraman (IK) optimal bandwidth, and cubic, respectively.
+
+![Regression Results for General Election Outcomes (Replication)](images/reg_1_v2.png){#fig-reg_general fig-align="center" width="78%"}
+
+The regression table below (@fig-reg_general) shows the effect of extremists' wins on general election vote share and victory using local linear, IK bandwidth, and cubic specification.
+The results suggest that, on average, extremists' winning the primary election causes a decrease in the general election vote share by 8 to 12 percentage points and a decrease in the probability of victory by 35 to 53 percentage points.
+
+\newpage
+
+# Extension Results
+
+## Summary Statistics
+
+![Summary Statistics (Extension)](images/summary_stats_extension_v1.png){#fig-sum_stats_dime fig-align="center" width="85%"}
+
+The summary table above (@fig-sum_stats_dime) shows the summary statistics for the extension dataset, DIME.
+The vote share of moderate candidates in the general election is higher than extreme candidates by 3 percentage points, and the probability of victory is higher for moderate than extreme candidates by 6 percentage points, which is consistent with the summary statistics of vote share and victory on the replication dataset.
+
+![General Election Vote Share against Extremist Winning Margin (Extension)](images/plot_e_1.png){#fig-plot_extension_1 fig-align="center" width="75%"}
+
+@fig-plot_extension_1 below has extreme candidate's winning margin on the x-axis and general election vote share on the y-axis.
+The blue lines are drawn on the subset of the dataset based on the treatment status.
+Unlike @fig-figure2 on the replication dataset, it does not show a drop around the margin of 0, implying there is no large difference in general election vote share for extreme candidates who narrowly win or lose primary elections.
+
+## Regression Results
+
+![Regression Results 1980-2010 (Extension)](images/tb_extension_1_v2.png){#fig-table_extension_1 fig-align="center" width="75%"}
+
+![Regression Results 1979-2020 (Extension)](images/tb_extension_2_v2.png){#fig-tb_extension_2 fig-align="center" width="75%"}
+
+@fig-table_extension_1 below shows the regression results for the DIME dataset from 1980 to 2010.
+On average, the effects of extremists' wins on vote share are from a 1 to 5 percentage point increase, and the cubic and IK bandwidth models have statistically significant results.
+The coefficients for the effects on victory suggest a 4 percentage point decrease to a 8 percentage point increase, but none of those are statistically significant.
+
+@fig-tb_extension_2 below shows the regression results for the years 1979-2020.
+For general election vote share, the effect of extremists' wins is, on average, from 0 to 5 percentage point increase, and the coefficient for the IK bandwidth and cubic specifications are statistically significant.
+The point estimates ranged from -0.05 to 0.1 for general election victory but are not statistically significant.
+The point estimates overall suggest the opposite effect of extremist wins on the general election outcomes to the replication results.
+
+\newpage
+
+# Conclusion
+
+In this paper, I replicated the study @hall2015 on the effects of extremist's wins in primary elections on the party's general election outcomes, specifically vote share and probability of victory.
+The replication results suggest that extremists' wins cause a decline in general election vote share and probability of victory.
+I conducted a further analysis using a dataset, DIME, which has more recent data and a different measure of candidates' ideology, to investigate if similar results hold when including data for recent years.
+The regression results, both with the same year range and more recent data from DIME, suggest positive effects of extremists' victory on general election outcomes except in one specification, which is not consistent with Hall's study.
+However, the results using DIME cannot be interpreted as the direction of the effects of extremists' wins has recently changed because the analyses using the same years had opposite signs in coefficients.
+The possible reason for differing results is the difference in the measure of ideological distance in Hall's dataset and the CF scores in the DIME dataset, which requires further investigation.
+
+\newpage
+
+::: {#refs}
+:::
+
+```{=tex}
+\newpage
+\appendix
+\renewcommand{\thefigure}{A\arabic{figure}}
+\renewcommand{\thetable}{A\arabic{table}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+```
+# Appendix {.appendix}
+
+![Estimated Vote Share Across Ideological Score Cutoffs](images/plot1-01.jpeg){.appendix fig-align="center" width="65%"}
+
+![Estimated Victory Across Ideological Score Cutoffs](images/plot2-01.jpg){fig-align="center" width="65%"}
+
+![Summary Statistics by District Characteristics - Replication of Hall 2015](images/summary_stats_rep_2.png){#fig-sum_stats_dist fig-align="center" width="100%"}
